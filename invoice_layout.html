@@ -1,0 +1,76 @@
+<!-- 請求書レイアウト（Aデザイン完全再現） -->
+<div id="invoice-layout" style="width: 800px; padding: 40px; font-family: 'Yu Gothic', sans-serif;">
+
+  <!-- 上段：No・タイトル・日付 -->
+  <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+
+    <!-- No -->
+    <div style="font-size: 14px;">
+      No：<span id="inv-no"></span>
+    </div>
+
+    <!-- タイトル -->
+    <div style="text-align: center; font-size: 28px; letter-spacing: 10px; font-weight: bold; margin-top: -10px;">
+      請 求 書
+    </div>
+
+    <!-- 日付 -->
+    <div style="font-size: 14px; text-align: right;">
+      <span id="inv-date"></span>
+    </div>
+
+  </div>
+
+  <!-- あいさつ文 -->
+  <div style="margin-top: 40px; font-size: 14px;">
+    下記のとおり、御請求申し上げます。
+  </div>
+
+  <!-- 宛名 -->
+  <div style="margin-top: 20px; font-size: 18px; font-weight: bold;">
+    <span id="client-name"></span>
+  </div>
+
+  <!-- 基本情報（件名・作業日など） -->
+  <div style="margin-top: 20px; font-size: 14px; line-height: 1.8;">
+    件名：<span id="subject"></span><br>
+    作業日：<span id="work-date"></span><br>
+  </div>
+
+  <!-- 請求者（もえ）の固定情報） -->
+  <div style="margin-top: 20px; font-size: 14px; line-height: 1.6;">
+    <div>〒612-8448</div>
+    <div>京都市竹田東小屋ノ内町104</div>
+    <div>TEL：080-5629-5688</div>
+    <div>松本 祐紀</div>
+  </div>
+
+  <!-- 明細表 -->
+  <table style="width: 100%; margin-top: 30px; border-collapse: collapse; font-size: 14px;">
+    <thead>
+      <tr>
+        <th style="border: 2px solid #444;">摘要</th>
+        <th style="border: 2px solid #444; width: 80px;">数量</th>
+        <th style="border: 2px solid #444; width: 80px;">単位</th>
+        <th style="border: 2px solid #444; width: 120px;">単価</th>
+        <th style="border: 2px solid #444; width: 150px;">金額</th>
+      </tr>
+    </thead>
+    <tbody id="details-body">
+      <!-- JSで10行生成して入れる -->
+    </tbody>
+  </table>
+
+  <!-- 小計・合計 -->
+  <div style="margin-top: 20px; width: 100%; text-align: right; font-size: 16px;">
+    小計：<span id="subtotal">0</span> 円<br>
+    <span style="font-weight: bold;">合計：<span id="total">0</span> 円</span>
+  </div>
+
+  <!-- 備考 -->
+  <div style="margin-top: 30px; font-size: 12px; line-height: 1.6;">
+    ※備考：<br>
+   
+  </div>
+
+</div>
