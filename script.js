@@ -1,17 +1,72 @@
-// 数量 × 単価 = 金額
-function calc(i) {
-  const qty = Number(document.getElementById("qty" + i).value || 0);
-  const price = Number(document.getElementById("price" + i).value || 0);
-  const amount = qty * price;
+// 入力フォーム → プレビューへ値を渡す
+function goPreview() {
+  const data = {
+    clientName: document.getElementById("clientName").value,
+    subject: document.getElementById("subject").value,
+    workDate: document.getElementById("workDate").value,
+    invoiceNo: document.getElementById("invoiceNo").value,
+    invoiceDate: document.getElementById("invoiceDate").value,
+    details: []
+  };
 
-  document.getElementById("amount" + i).value =
-    amount === 0 ? "" : amount.toLocaleString();
+  // 明細10行
+  for (let i = 1; i <= 10; i++) {
+    data.details.push({
+      item: document.getElementById("item" + i).value,
+      qty: document.getElementById("qty" + i).value,
+      unit: document.getElementById("unit" + i).value,
+      price: document.getElementById("price" + i).value
+    });
+  }
+
+  localStorage.setItem("invoiceData", JSON.stringify(data));
+
+  window.location.href = "invoice_layout.html";
 }
 
 
-// PDF生成（画面を丸ごと画像としてPDF化 → 日本語も文字化けゼロ）
+// ■ プレビュー画面：値を挿入
+if (location.pathname.includes("invoice_layout.html")) {
+  const data = JSON.parse(localStorage.getItem("invoiceData") || "{}");
+
+  document.getElementById("client-name").textContent = data.clientName || "";
+  document.getElementById("subject").textContent = data.subject || "";
+  document.getElementById("work-date").textContent = data.workDate || "";
+  document.getElementById("inv-no").textContent = data.invoiceNo || "";
+  document.getElementById("inv-date").textContent = data.invoiceDate || "";
+
+  // 明細表示
+  const tbody = document.getElementById("details-body");
+  let subtotal = 0;
+
+  data.details.forEach((row) => {
+    if (!row.item && !row.qty && !row.unit && !row.price) return;
+
+    const qty = Number(row.qty || 0);
+    const price = Number(row.price || 0);
+    const amount = qty * price;
+
+    subtotal += amount;
+
+    tbody.innerHTML += `
+      <tr>
+        <td>${row.item}</td>
+        <td style="text-align:right;">${qty || ""}</td>
+        <td>${row.unit}</td>
+        <td style="text-align:right;">${price ? price.toLocaleString() : ""}</td>
+        <td style="text-align:right;">${amount ? amount.toLocaleString() : ""}</td>
+      </tr>
+    `;
+  });
+
+  document.getElementById("subtotal").textContent = subtotal.toLocaleString();
+  document.getElementById("total").textContent = subtotal.toLocaleString();
+}
+
+
+// ■ PDF生成
 async function createPDF() {
-  const element = document.body;
+  const element = document.getElementById("invoice-layout");
 
   const canvas = await html2canvas(element, { scale: 2 });
   const imgData = canvas.toDataURL("image/png");
@@ -19,7 +74,7 @@ async function createPDF() {
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF("p", "mm", "a4");
 
-  const imgWidth = 210;          // A4幅
+  const imgWidth = 210;
   const imgHeight = canvas.height * (imgWidth / canvas.width);
 
   pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);

@@ -1,44 +1,45 @@
-<!-- 請求書レイアウト（Aデザイン完全再現） -->
-<div id="invoice-layout" style="width: 800px; padding: 40px; font-family: 'Yu Gothic', sans-serif;">
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>請求書プレビュー</title>
 
-  <!-- 上段：No・タイトル・日付 -->
-  <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-    <!-- No -->
-    <div style="font-size: 14px;">
-      No：<span id="inv-no"></span>
-    </div>
+  <style>
+    body { display: flex; justify-content: center; background: #f4f4f4; padding: 20px; }
+    table { border-collapse: collapse; width: 100%; font-size: 14px; }
+    th, td { border: 2px solid #444; padding: 6px; }
+    th { background: #f9f9f9; }
+  </style>
+</head>
+<body>
 
-    <!-- タイトル -->
-    <div style="text-align: center; font-size: 28px; letter-spacing: 10px; font-weight: bold; margin-top: -10px;">
-      請 求 書
-    </div>
+<div id="invoice-layout" style="width: 800px; padding: 40px; background: #fff; font-family: 'Yu Gothic', sans-serif;">
 
-    <!-- 日付 -->
-    <div style="font-size: 14px; text-align: right;">
-      <span id="inv-date"></span>
-    </div>
-
+  <!-- 上段 -->
+  <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+    <div>No：<span id="inv-no"></span></div>
+    <div style="font-size:28px; letter-spacing:10px; font-weight:bold; margin-top:-10px;">請 求 書</div>
+    <div><span id="inv-date"></span></div>
   </div>
 
-  <!-- あいさつ文 -->
-  <div style="margin-top: 40px; font-size: 14px;">
-    下記のとおり、御請求申し上げます。
-  </div>
+  <div style="margin-top:40px;">下記のとおり、御請求申し上げます。</div>
 
   <!-- 宛名 -->
-  <div style="margin-top: 20px; font-size: 18px; font-weight: bold;">
+  <div style="margin-top:20px; font-size:18px; font-weight:bold;">
     <span id="client-name"></span>
   </div>
 
-  <!-- 基本情報（件名・作業日など） -->
-  <div style="margin-top: 20px; font-size: 14px; line-height: 1.8;">
+  <!-- 件名・作業日 -->
+  <div style="margin-top:20px; line-height:1.8;">
     件名：<span id="subject"></span><br>
     作業日：<span id="work-date"></span><br>
   </div>
 
-  <!-- 請求者（もえ）の固定情報） -->
-  <div style="margin-top: 20px; font-size: 14px; line-height: 1.6;">
+  <!-- 自社情報（もえ固定） -->
+  <div style="margin-top:20px; line-height:1.6;">
     <div>〒612-8448</div>
     <div>京都市竹田東小屋ノ内町104</div>
     <div>TEL：080-5629-5688</div>
@@ -46,31 +47,38 @@
   </div>
 
   <!-- 明細表 -->
-  <table style="width: 100%; margin-top: 30px; border-collapse: collapse; font-size: 14px;">
+  <table style="margin-top:30px;">
     <thead>
       <tr>
-        <th style="border: 2px solid #444;">摘要</th>
-        <th style="border: 2px solid #444; width: 80px;">数量</th>
-        <th style="border: 2px solid #444; width: 80px;">単位</th>
-        <th style="border: 2px solid #444; width: 120px;">単価</th>
-        <th style="border: 2px solid #444; width: 150px;">金額</th>
+        <th>摘要</th>
+        <th style="width:80px;">数量</th>
+        <th style="width:80px;">単位</th>
+        <th style="width:120px;">単価</th>
+        <th style="width:150px;">金額</th>
       </tr>
     </thead>
-    <tbody id="details-body">
-      <!-- JSで10行生成して入れる -->
-    </tbody>
+    <tbody id="details-body"></tbody>
   </table>
 
   <!-- 小計・合計 -->
-  <div style="margin-top: 20px; width: 100%; text-align: right; font-size: 16px;">
-    小計：<span id="subtotal">0</span> 円<br>
-    <span style="font-weight: bold;">合計：<span id="total">0</span> 円</span>
+  <div style="margin-top:20px; text-align:right; font-size:16px;">
+    小計：<span id="subtotal"></span> 円<br>
+    <span style="font-weight:bold;">合計：<span id="total"></span> 円</span>
   </div>
 
   <!-- 備考 -->
-  <div style="margin-top: 30px; font-size: 12px; line-height: 1.6;">
+  <div style="margin-top:30px; font-size:12px; line-height:1.6;">
     ※備考：<br>
-   
+    領収書につきましては、金融機関の振込明細書をもって代えさせて頂きます。
+  </div>
+
+  <div style="margin-top:40px; text-align:center;">
+    <button onclick="createPDF()" style="padding:10px 20px; font-size:16px;">PDFを作成</button>
   </div>
 
 </div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
