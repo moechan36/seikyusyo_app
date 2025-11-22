@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>請求書PDF作成アプリ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- HTMLを画像化してPDFにするためのライブラリ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- 計算用とPDF生成用のスクリプト -->
+  <script src="script.js" defer></script>
+
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid #999;
+      padding: 6px;
+      text-align: left;
+    }
+    input, select {
+      width: 100%;
+      padding: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>請求書作成フォーム</h1>
+
+<form onsubmit="event.preventDefault(); createPDF();">
+
+  <label>御請求先（宛名）</label>
+  <input type="text" id="toName">
+
+  <label>件名</label>
+  <input type="text" id="subject">
+
+  <label>作業日</label>
+  <input type="date" id="workDate">
+
+  <label>請求日</label>
+  <input type="date" id="billDate">
+
+  <label>請求書No.</label>
+  <input type="text" id="invoiceNo">
+
+  <h2>品目（最大10行）</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>摘要</th>
+        <th>数量</th>
+        <th>単位</th>
+        <th>単価</th>
+        <th>金額</th>
+      </tr>
+    </thead>
+    <tbody id="itemsBody"></tbody>
+  </table>
+
+  <button type="submit">PDFを作成</button>
+</form>
+
+<script>
+  // ページ読み込み時に10行生成
+  window.onload = () => {
+    const tbody = document.getElementById("itemsBody");
+
+    for (let i = 1; i <= 10; i++) {
+      tbody.innerHTML += `
+        <tr>
+          <td><input id="item${i}"></td>
+          <td><input id="qty${i}" type="number" oninput="calc(${i})"></td>
+          <td>
+            <select id="unit${i}" onchange="calc(${i})">
+              <option value=""></option>
+              <option value="個">個</option>
+              <option value="台">台</option>
+              <option value="式">式</option>
+              <option value="m">m</option>
+              <option value="セット">セット</option>
+              <option value="時間">時間</option>
+              <option value="日">日</option>
+            </select>
+          </td>
+          <td><input id="price${i}" type="number" oninput="calc(${i})"></td>
+          <td><input id="amount${i}" readonly></td>
+        </tr>
+      `;
+    }
+  };
+</script>
+
+</body>
+</html>
