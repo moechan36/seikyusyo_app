@@ -4,28 +4,27 @@
   <meta charset="UTF-8">
   <title>請求書プレビュー</title>
 
-  <!-- プレビュー用CSS（背景が最後まで伸びる完全版） -->
   <style>
-
-    /* ★ 追加：背景を完全に白・A4相当の高さ確保 */
+    /* --- 全体 --- */
     body {
-      background: #fff !important;
+      display: flex;
+      justify-content: center;
+      background: #f4f4f4;
       margin: 0;
       padding: 0;
       font-family: "Yu Gothic", sans-serif;
-      display: flex;
-      justify-content: center;
     }
 
+    /* --- A4固定の箱 --- */
     #invoice-layout {
-      width: 800px;
+      width: 794px;       /* A4横幅に合わせる */
+      min-height: 1123px; /* A4高さピッタリ */
       background: #fff;
       padding: 40px;
-      min-height: 1123px !important; /* A4縦の高さ */
       box-sizing: border-box;
     }
 
-    /* テーブル */
+    /* --- テーブル基本 --- */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -42,36 +41,33 @@
       background: #fafafa;
     }
 
-    /* 小計・合計 */
+    /* --- 合計 --- */
     #summary {
-      margin-top: 20px;
+      margin-top: 15px;
       text-align: right;
       font-size: 16px;
       font-weight: bold;
     }
 
-    /* 備考 */
+    /* --- 備考 --- */
     #note {
-      margin-top: 30px;
+      margin-top: 25px;
       font-size: 12px;
-      line-height: 1.6;
+      line-height: 1.5;
     }
 
-    /* ★ 印刷時：不要な要素を非表示 */
+    /* PDF化では余計な要素非表示 */
     @media print {
       .no-print {
         display: none !important;
       }
+
       body {
         background: #fff !important;
       }
     }
 
   </style>
-
-  <!-- html2canvas & jsPDF（使用しないなら無視してOK） -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
 <body>
@@ -110,13 +106,13 @@
   <!-- 明細表 -->
   <table>
     <thead>
-      <tr>
-        <th>摘要</th>
-        <th style="width:80px;">数量</th>
-        <th style="width:80px;">単位</th>
-        <th style="width:120px;">単価</th>
-        <th style="width:150px;">金額</th>
-      </tr>
+    <tr>
+      <th>摘要</th>
+      <th style="width:80px;">数量</th>
+      <th style="width:80px;">単位</th>
+      <th style="width:120px;">単価</th>
+      <th style="width:150px;">金額</th>
+    </tr>
     </thead>
     <tbody id="details-body"></tbody>
   </table>
