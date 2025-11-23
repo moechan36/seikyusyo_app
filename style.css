@@ -52,3 +52,57 @@ th {
   margin-top: 40px;
   text-align: center;
 }
+
+/* ▼ スマホ対応（〜600px） */
+@media screen and (max-width: 600px) {
+
+  body {
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  /* 入力欄 */
+  input,
+  select {
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  /* テーブルがスマホで横スクロール可 */
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  th, td {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  /* ボタン */
+  button {
+    font-size: 16px;
+    padding: 12px;
+  }
+}
+
+/* ▼ さらに小さい端末（〜400px） */
+@media screen and (max-width: 400px) {
+  input,
+  select {
+    font-size: 15px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  th, td {
+    font-size: 13px;
+  }
+}
