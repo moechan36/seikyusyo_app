@@ -1,4 +1,4 @@
-// 入力 → プレビューへ値を渡す
+// 入力フォーム → プレビューへ値を渡す
 function goPreview() {
   const data = {
     clientName: document.getElementById("clientName").value,
@@ -9,7 +9,6 @@ function goPreview() {
     details: []
   };
 
-  // 10行の明細
   for (let i = 1; i <= 10; i++) {
     data.details.push({
       item: document.getElementById("item" + i).value,
@@ -20,13 +19,13 @@ function goPreview() {
   }
 
   localStorage.setItem("invoiceData", JSON.stringify(data));
-  window.location.href = "invoice_layout.html";
+
+  window.location.href = "invoice_layout.html?v=" + Date.now();
 }
 
 
-// プレビュー画面へ値を挿入
+// ■ プレビュー画面：値を挿入
 if (location.pathname.includes("invoice_layout.html")) {
-
   const data = JSON.parse(localStorage.getItem("invoiceData") || "{}");
 
   document.getElementById("client-name").textContent = data.clientName || "";
@@ -63,18 +62,16 @@ if (location.pathname.includes("invoice_layout.html")) {
 }
 
 
-// PDF生成（キャプチャ前にボタンを DOM から削除）
+// ■ PDF生成（print.css を強制適用）
 async function createPDF() {
+  const layout = document.getElementById("invoice-layout");
 
-  const btnWrapper = document.querySelector(".no-print");
-  const parent = btnWrapper.parentNode;
+  // 印刷用CSSを強制有効化
+  layout.classList.add("print-mode");
 
-  // キャプチャ中に削除 → 映り込み防止
-  parent.removeChild(btnWrapper);
+  await new Promise((resolve) => setTimeout(resolve, 300));
 
-  const element = document.getElementById("invoice-layout");
-
-  const canvas = await html2canvas(element, { scale: 2 });
+  const canvas = await html2canvas(layout, { scale: 2 });
   const imgData = canvas.toDataURL("image/png");
 
   const { jsPDF } = window.jspdf;
@@ -86,6 +83,6 @@ async function createPDF() {
   pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
   pdf.save("invoice.pdf");
 
-  // PDF生成後、画面では復活
-  parent.appendChild(btnWrapper);
+  // 元に戻す
+  layout.classList.remove("print-mode");
 }
