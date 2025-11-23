@@ -9,12 +9,13 @@ function goPreview() {
     details: []
   };
 
+  // 明細10行
   for (let i = 1; i <= 10; i++) {
     data.details.push({
       item: document.getElementById("item" + i).value,
       qty: document.getElementById("qty" + i).value,
       unit: document.getElementById("unit" + i).value,
-      price: document.getElementById("price" + i).value,
+      price: document.getElementById("price" + i).value
     });
   }
 
@@ -22,19 +23,21 @@ function goPreview() {
   window.location.href = "invoice_layout.html";
 }
 
-// プレビューでデータ反映
+
+// ▼ プレビュー画面：値を挿入
 if (location.pathname.includes("invoice_layout.html")) {
   const data = JSON.parse(localStorage.getItem("invoiceData") || "{}");
-  document.getElementById("client-name").textContent = data.clientName;
-  document.getElementById("subject").textContent = data.subject;
-  document.getElementById("work-date").textContent = data.workDate;
-  document.getElementById("inv-no").textContent = data.invoiceNo;
-  document.getElementById("inv-date").textContent = data.invoiceDate;
+
+  document.getElementById("client-name").textContent = data.clientName || "";
+  document.getElementById("subject").textContent = data.subject || "";
+  document.getElementById("work-date").textContent = data.workDate || "";
+  document.getElementById("inv-no").textContent = data.invoiceNo || "";
+  document.getElementById("inv-date").textContent = data.invoiceDate || "";
 
   const tbody = document.getElementById("details-body");
   let subtotal = 0;
 
-  data.details.forEach(row => {
+  data.details.forEach((row) => {
     if (!row.item && !row.qty && !row.unit && !row.price) return;
 
     const qty = Number(row.qty || 0);
@@ -45,10 +48,10 @@ if (location.pathname.includes("invoice_layout.html")) {
     tbody.innerHTML += `
       <tr>
         <td>${row.item}</td>
-        <td style="text-align:right;">${qty}</td>
+        <td style="text-align:right;">${qty || ""}</td>
         <td>${row.unit}</td>
-        <td style="text-align:right;">${price.toLocaleString()}</td>
-        <td style="text-align:right;">${amount.toLocaleString()}</td>
+        <td style="text-align:right;">${price ? price.toLocaleString() : ""}</td>
+        <td style="text-align:right;">${amount ? amount.toLocaleString() : ""}</td>
       </tr>
     `;
   });
@@ -57,31 +60,35 @@ if (location.pathname.includes("invoice_layout.html")) {
   document.getElementById("total").textContent = subtotal.toLocaleString();
 }
 
-// PDF生成
+
+// ▼ PDF生成（スマホ対応版）
 async function createPDF() {
-  const layout = document.getElementById("invoice-layout");
-  const btn = document.getElementById("pdf-button-area");
+  const element = document.getElementById("invoice-layout");
 
-  // PDF前に強制で非表示
-  btn.classList.add("no-print-force");
-
-  window.scrollTo(0,0);
-
-  const canvas = await html2canvas(layout, {
-    scale: 2,
-    useCORS: true,
+  // 高解像度で画像化（スマホ対応）
+  const canvas = await html2canvas(element, {
+    scale: window.devicePixelRatio * 2,
+    useCORS: true
   });
 
   const imgData = canvas.toDataURL("image/png");
+
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF("p", "mm", "a4");
 
+  // A4横幅に合わせる
   const imgWidth = 210;
   const imgHeight = canvas.height * (imgWidth / canvas.width);
 
   pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-  pdf.save("invoice.pdf");
 
-  // PDF作成後に戻す
-  btn.classList.remove("no-print-force");
+  // ▼ iPhone / iPad / iOS：直接保存すると壊れるため別タブで開く
+  if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
+    const blob = pdf.output("blob");
+    const url = URL.createObjectURL(blob);
+    window.open(url, "_blank");  // 新しいタブでPDFを表示（Safari対応）
+  } else {
+    // PCは普通に保存
+    pdf.save("invoice.pdf");
+  }
 }
