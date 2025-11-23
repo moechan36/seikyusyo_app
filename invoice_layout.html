@@ -7,6 +7,9 @@
   <!-- プレビュー用CSS -->
   <link rel="stylesheet" href="style.css">
 
+  <!-- 印刷（PDF生成）専用CSS -->
+  <link rel="stylesheet" href="print.css" media="print">
+
   <!-- html2canvas & jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -16,29 +19,29 @@
 
 <div id="invoice-layout">
 
-  <!-- 上段 -->
-  <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+  <!-- 上段（タイトル部分） -->
+  <div class="header">
     <div>No：<span id="inv-no"></span></div>
-    <div style="font-size:28px; letter-spacing:10px; font-weight:bold;">請　求　書</div>
+    <div class="title">請　求　書</div>
     <div><span id="inv-date"></span></div>
   </div>
 
-  <div style="margin-top:40px;">下記のとおり、御請求申し上げます。</div>
+  <div class="intro">下記のとおり、御請求申し上げます。</div>
 
   <!-- 宛名 -->
-  <div style="margin-top:20px; font-size:18px; font-weight:bold;">
+  <div class="client-name">
     <span id="client-name"></span>
   </div>
 
   <!-- 件名・作業日 -->
-  <div style="margin-top:20px; line-height:1.8;">
+  <div class="basic-info">
     件名：<span id="subject"></span><br>
     作業日：<span id="work-date"></span><br>
   </div>
 
   <!-- 請求者 -->
-  <div style="margin-top:20px; font-weight:bold;">【請求者】</div>
-  <div style="line-height:1.6;">
+  <div class="seller-title">【請求者】</div>
+  <div class="seller-info">
     〒612-8448<br>
     京都市竹田東小屋ノ内町104<br>
     TEL：080-5629-5688<br>
@@ -46,7 +49,7 @@
   </div>
 
   <!-- 明細表 -->
-  <table style="margin-top:30px;">
+  <table class="detail-table">
     <thead>
       <tr>
         <th>摘要</th>
@@ -62,7 +65,7 @@
   <!-- 小計・合計 -->
   <div id="summary">
     小計：<span id="subtotal"></span> 円<br>
-    <span style="font-weight:bold;">合計：<span id="total"></span> 円</span>
+    <strong>合計：<span id="total"></span> 円</strong>
   </div>
 
   <!-- 備考 -->
@@ -71,8 +74,9 @@
     領収書につきましては、金融機関の振込明細書をもって代えさせて頂きます。
   </div>
 
-  <div style="margin-top:40px; text-align:center;">
-    <button class="no-print" onclick="createPDF()" style="padding:10px 20px; font-size:16px;">PDFを作成</button>
+  <!-- ボタン（画面だけ・PDFには出ない） -->
+  <div class="button-area">
+    <button class="no-print" onclick="createPDF()">PDFを作成</button>
   </div>
 
 </div>
