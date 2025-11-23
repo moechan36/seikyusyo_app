@@ -4,24 +4,62 @@
   <meta charset="UTF-8">
   <title>請求書プレビュー</title>
 
-  <!-- プレビュー用CSS -->
-  <link rel="stylesheet" href="style.css">
+  <!-- プレビュー用CSS（前に綺麗に出ていたもの） -->
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      background: #f4f4f4;
+      padding: 20px;
+      margin: 0;
+      font-family: "Yu Gothic", sans-serif;
+    }
+
+    #invoice-layout {
+      width: 800px;
+      background: #fff;
+      padding: 40px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+      font-size: 14px;
+    }
+
+    th, td {
+      border: 2px solid #444;
+      padding: 6px;
+    }
+
+    th {
+      background: #fafafa;
+    }
+
+    #summary {
+      margin-top: 20px;
+      text-align: right;
+      font-size: 16px;
+    }
+
+    #note {
+      margin-top: 30px;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    /* PDF化するとき非表示 */
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
 
   <!-- html2canvas & jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-  <!-- ★ ここが最重要：PDF時だけ確実に非表示にするCSS ★ -->
-  <style>
-    /* PDFスクショ前に強制で隠す */
-    .no-print-force {
-      display: none !important;
-      visibility: hidden !important;
-      opacity: 0 !important;
-      height: 0 !important;
-      overflow: hidden !important;
-    }
-  </style>
 </head>
 
 <body>
@@ -58,7 +96,7 @@
   </div>
 
   <!-- 明細表 -->
-  <table style="margin-top:30px;">
+  <table>
     <thead>
       <tr>
         <th>摘要</th>
@@ -83,11 +121,9 @@
     領収書につきましては、金融機関の振込明細書をもって代えさせて頂きます。
   </div>
 
-  <!-- ★ 画面表示では出す / PDFには絶対に写らないボタン ★ -->
-  <div id="pdf-button-area" style="margin-top:40px; text-align:center;">
-    <button onclick="createPDF()" style="padding:10px 20px; font-size:16px;">
-      PDFを作成
-    </button>
+  <!-- PDFボタン（復活） -->
+  <div class="no-print" style="margin-top:40px; text-align:center;">
+    <button onclick="createPDF()" style="padding:10px 20px; font-size:16px;">PDFを作成</button>
   </div>
 
 </div>
