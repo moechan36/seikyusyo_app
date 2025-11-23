@@ -15,31 +15,6 @@ body {
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-/* ラベル */
-label {
-  font-weight: bold;
-  margin-top: 15px;
-  display: block;
-}
-
-/* 入力欄 */
-input, select, button {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-  box-sizing: border-box;
-  font-size: 15px;
-}
-
-button {
-  background: #333;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  padding: 12px;
-  margin-top: 20px;
-}
-
 /* テーブル */
 table {
   width: 100%;
@@ -59,9 +34,10 @@ th {
 
 /* 小計・合計 */
 #summary {
-  margin-top: 20px;
   text-align: right;
+  margin-top: 20px;
   font-size: 16px;
+  font-weight: bold;
 }
 
 /* 備考 */
@@ -71,15 +47,8 @@ th {
   line-height: 1.6;
 }
 
-/* PDF作成ボタン（画面のみ表示） */
+/* ボタン */
 .no-print {
   margin-top: 40px;
   text-align: center;
-}
-
-/* 📌 印刷（PDF生成）のときだけボタンを消す */
-@media print {
-  .no-print {
-    display: none !important;
-  }
 }
