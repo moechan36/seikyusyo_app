@@ -63,10 +63,13 @@ if (location.pathname.includes("invoice_layout.html")) {
 }
 
 
-// ■ PDF生成（ボタンを一時的に非表示 → PDF生成 → 再表示）
+// ■ PDF生成（ボタンを完全に消してからキャプチャ → 生成後に戻す）
 async function createPDF() {
   const btn = document.querySelector(".no-print");
-  btn.style.display = "none";  // ★ 写り込み防止
+
+  // ★ PDF生成中だけ DOM から完全に削除する
+  const parent = btn.parentNode;
+  parent.removeChild(btn);
 
   const element = document.getElementById("invoice-layout");
 
@@ -82,5 +85,6 @@ async function createPDF() {
   pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
   pdf.save("invoice.pdf");
 
-  btn.style.display = "block"; // ★ 画面上では再表示
+  // ★ 終わったら DOM に戻す（画面では普通に表示される）
+  parent.appendChild(btn);
 }
