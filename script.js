@@ -1,99 +1,61 @@
-// 入力フォーム → プレビューへ値を渡す
 function goPreview() {
-  const data = {
-    clientName: document.getElementById("clientName").value,
-    subject: document.getElementById("subject").value,
-    workDate: document.getElementById("workDate").value,
-    invoiceNo: document.getElementById("invoiceNo").value,
-    invoiceDate: document.getElementById("invoiceDate").value,
-    details: []
-  };
+  const params = new URLSearchParams();
 
-  // 明細10行（空欄も含めて必ず10行入れる）
+  params.append("clientName", document.getElementById("clientName").value);
+  params.append("subject", document.getElementById("subject").value);
+  params.append("workDate", document.getElementById("workDate").value);
+  params.append("invoiceNo", document.getElementById("invoiceNo").value);
+  params.append("invoiceDate", document.getElementById("invoiceDate").value);
+
   for (let i = 1; i <= 10; i++) {
-    data.details.push({
-      item: document.getElementById("item" + i).value || "",
-      qty: document.getElementById("qty" + i).value || "",
-      unit: document.getElementById("unit" + i).value || "",
-      price: document.getElementById("price" + i).value || ""
-    });
+      params.append(`item${i}`, document.getElementById(`item${i}`).value);
+      params.append(`qty${i}`, document.getElementById(`qty${i}`).value);
+      params.append(`unit${i}`, document.getElementById(`unit${i}`).value);
+      params.append(`price${i}`, document.getElementById(`price${i}`).value);
   }
 
-  localStorage.setItem("invoiceData", JSON.stringify(data));
-
-  window.location.href = "invoice_layout.html";
+  location.href = "invoice_layout.html?" + params.toString();
 }
 
+// ▼ プレビュー画面読み込み
+window.onload = () => {
+  if (location.pathname.includes("invoice_layout.html")) {
+    
+    const url = new URL(window.location.href);
+    const p = url.searchParams;
 
-// ▼ プレビュー画面：値を挿入
-if (location.pathname.includes("invoice_layout.html")) {
-  const data = JSON.parse(localStorage.getItem("invoiceData") || "{}");
+    document.getElementById("inv-no").textContent = p.get("invoiceNo");
+    document.getElementById("inv-date").textContent = p.get("invoiceDate");
+    document.getElementById("client-name").textContent = p.get("clientName");
+    document.getElementById("subject").textContent = p.get("subject");
+    document.getElementById("work-date").textContent = p.get("workDate");
 
-  document.getElementById("client-name").textContent = data.clientName || "";
-  document.getElementById("subject").textContent = data.subject || "";
-  document.getElementById("work-date").textContent = data.workDate || "";
-  document.getElementById("inv-no").textContent = data.invoiceNo || "";
-  document.getElementById("inv-date").textContent = data.invoiceDate || "";
+    let tbody = document.getElementById("details-body");
+    let subtotal = 0;
 
-  const tbody = document.getElementById("details-body");
-  let subtotal = 0;
+    for (let i = 1; i <= 10; i++) {
 
-  // ここ → 必ず10行分出す
-  data.details.forEach((row) => {
-    const qty = Number(row.qty || 0);
-    const price = Number(row.price || 0);
-    const amount = qty * price;
+      const item  = p.get(`item${i}`) || "";
+      const qty   = p.get(`qty${i}`) || "";
+      const unit  = p.get(`unit${i}`) || "";
+      const price = p.get(`price${i}`) || "";
 
-    subtotal += amount;
+      const amount = (qty && price) ? qty * price : "";
 
-    tbody.innerHTML += `
-      <tr>
-        <td>${row.item || ""}</td>
-        <td style="text-align:right;">${row.qty || ""}</td>
-        <td>${row.unit || ""}</td>
-        <td style="text-align:right;">${price ? price.toLocaleString() : ""}</td>
-        <td style="text-align:right;">${amount ? amount.toLocaleString() : ""}</td>
-      </tr>
-    `;
-  });
+      if (amount) subtotal += amount;
 
-  document.getElementById("subtotal").textContent = subtotal.toLocaleString();
-  document.getElementById("total").textContent = subtotal.toLocaleString();
-}
+      tbody.innerHTML += `
+        <tr>
+          <td>${item}</td>
+          <td>${qty}</td>
+          <td>${unit}</td>
+          <td>${price ? Number(price).toLocaleString() : ""}</td>
+          <td>${amount ? Number(amount).toLocaleString() : ""}</td>
+        </tr>
+      `;
+    }
 
-
-// ▼ PDF生成（iPhone対応版）
-// ※ プレビュー画面では呼ばれなくなるがコードは残しておく
-async function createPDF() {
-  const element = document.getElementById("invoice-layout");
-
-  const canvas = await html2canvas(element, {
-    scale: window.devicePixelRatio * 2,
-    useCORS: true
-  });
-
-  const imgData = canvas.toDataURL("image/png");
-
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF("p", "mm", "a4");
-
-  const imgWidth = 210;
-  const imgHeight = canvas.height * (imgWidth / canvas.width);
-
-  pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-
-  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-
-  if (isIOS) {
-    const blob = pdf.output("blob");
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.target = "_blank";
-    a.rel = "noopener";
-    a.click();
-  } else {
-    pdf.save("invoice.pdf");
+    document.getElementById("subtotal").textContent = subtotal.toLocaleString();
+    document.getElementById("total").textContent = subtotal.toLocaleString();
   }
-}
+};
