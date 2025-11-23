@@ -15,12 +15,6 @@ body {
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-/* 入力フォーム側の最大幅 */
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
 /* ラベル */
 label {
   font-weight: bold;
@@ -28,7 +22,7 @@ label {
   display: block;
 }
 
-/* 入力 */
+/* 入力欄 */
 input, select, button {
   width: 100%;
   padding: 8px;
@@ -63,22 +57,27 @@ th {
   font-weight: bold;
 }
 
-/* 金額の位置 */
-.amount-right {
-  text-align: right;
-  font-weight: bold;
+/* 小計・合計 */
+#summary {
   margin-top: 20px;
+  text-align: right;
   font-size: 16px;
 }
 
-/* 注釈 */
-.note {
+/* 備考 */
+#note {
   margin-top: 30px;
   font-size: 12px;
   line-height: 1.6;
 }
 
-/* PDFには絶対に表示しない */
+/* PDF作成ボタン（画面のみ表示） */
+.no-print {
+  margin-top: 40px;
+  text-align: center;
+}
+
+/* 📌 印刷（PDF生成）のときだけボタンを消す */
 @media print {
   .no-print {
     display: none !important;
