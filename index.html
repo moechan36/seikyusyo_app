@@ -5,81 +5,53 @@
   <title>請求書作成フォーム</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body { 
-      font-family: sans-serif; 
-      padding: 20px; 
-      max-width: 800px; 
-      margin: auto;
-    }
-    label { margin-top: 15px; display: block; font-weight: bold; }
-    input, select, button {
-      width: 100%;
-      padding: 8px;
-      font-size: 15px;
-      margin-top: 5px;
-      box-sizing: border-box;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 5px;
-    }
-    th {
-      background: #f2f2f2;
-    }
-    button {
-      margin-top: 20px;
-      background: #333;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-    }
-  </style>
+  <!-- 外部CSS -->
+  <link rel="stylesheet" href="style.css">
 
+  <!-- 処理ファイル -->
   <script src="script.js" defer></script>
 </head>
 <body>
 
-<h2>請求書作成フォーム</h2>
+<div class="container">
 
-<label>御請求先（宛名）</label>
-<input id="clientName">
+  <h2>請求書作成フォーム</h2>
 
-<label>件名</label>
-<input id="subject">
+  <label>御請求先（宛名）</label>
+  <input id="clientName">
 
-<label>作業日</label>
-<input id="workDate">
+  <label>件名</label>
+  <input id="subject">
 
-<label>請求書No</label>
-<input id="invoiceNo">
+  <label>作業日</label>
+  <input id="workDate">
 
-<label>請求日</label>
-<input type="date" id="invoiceDate">
+  <label>請求書 No.</label>
+  <input id="invoiceNo">
 
-<h3>明細（最大10行）</h3>
+  <label>請求日</label>
+  <input type="date" id="invoiceDate">
 
-<table>
-  <thead>
-    <tr>
-      <th>摘要</th>
-      <th>数量</th>
-      <th>単位</th>
-      <th>単価</th>
-    </tr>
-  </thead>
-  <tbody id="detailRows"></tbody>
-</table>
+  <h3>明細（最大10行）</h3>
 
-<button onclick="goPreview()">プレビューへ</button>
+  <table>
+    <thead>
+      <tr>
+        <th>摘要</th>
+        <th>数量</th>
+        <th>単位</th>
+        <th>単価</th>
+      </tr>
+    </thead>
+    <tbody id="detailRows"></tbody>
+  </table>
 
+  <button onclick="goPreview()">プレビューへ</button>
+
+</div>
+
+<!-- 明細10行生成 -->
 <script>
-  // 明細10行を自動生成
   window.onload = () => {
     const tbody = document.getElementById("detailRows");
 

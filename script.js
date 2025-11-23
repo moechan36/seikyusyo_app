@@ -1,4 +1,4 @@
-// 入力フォーム → プレビューへ値を渡す
+// 入力 → プレビューへ値を渡す
 function goPreview() {
   const data = {
     clientName: document.getElementById("clientName").value,
@@ -9,7 +9,7 @@ function goPreview() {
     details: []
   };
 
-  // 明細10行
+  // 10行の明細
   for (let i = 1; i <= 10; i++) {
     data.details.push({
       item: document.getElementById("item" + i).value,
@@ -24,8 +24,9 @@ function goPreview() {
 }
 
 
-// ■ プレビュー画面：値を挿入
+// プレビュー画面へ値を挿入
 if (location.pathname.includes("invoice_layout.html")) {
+
   const data = JSON.parse(localStorage.getItem("invoiceData") || "{}");
 
   document.getElementById("client-name").textContent = data.clientName || "";
@@ -34,7 +35,6 @@ if (location.pathname.includes("invoice_layout.html")) {
   document.getElementById("inv-no").textContent = data.invoiceNo || "";
   document.getElementById("inv-date").textContent = data.invoiceDate || "";
 
-  // 明細表示
   const tbody = document.getElementById("details-body");
   let subtotal = 0;
 
@@ -63,13 +63,14 @@ if (location.pathname.includes("invoice_layout.html")) {
 }
 
 
-// ■ PDF生成（ボタンを完全に消してからキャプチャ → 生成後に戻す）
+// PDF生成（キャプチャ前にボタンを DOM から削除）
 async function createPDF() {
-  const btn = document.querySelector(".no-print");
 
-  // ★ PDF生成中だけ DOM から完全に削除する
-  const parent = btn.parentNode;
-  parent.removeChild(btn);
+  const btnWrapper = document.querySelector(".no-print");
+  const parent = btnWrapper.parentNode;
+
+  // キャプチャ中に削除 → 映り込み防止
+  parent.removeChild(btnWrapper);
 
   const element = document.getElementById("invoice-layout");
 
@@ -85,6 +86,6 @@ async function createPDF() {
   pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
   pdf.save("invoice.pdf");
 
-  // ★ 終わったら DOM に戻す（画面では普通に表示される）
-  parent.appendChild(btn);
+  // PDF生成後、画面では復活
+  parent.appendChild(btnWrapper);
 }

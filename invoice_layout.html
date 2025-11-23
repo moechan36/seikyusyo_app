@@ -4,60 +4,29 @@
   <meta charset="UTF-8">
   <title>請求書プレビュー</title>
 
+  <link rel="stylesheet" href="style.css">
+
+  <!-- ライブラリ -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      background: #f4f4f4;
-      padding: 20px;
-    }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      font-size: 14px;
-    }
-    th, td {
-      border: 2px solid #444;
-      padding: 6px;
-    }
-    th {
-      background: #f9f9f9;
-    }
-
-    /* ★ PDF作成ボタンをPDF出力時は非表示にする */
-    .no-print {
-      display: block;
-    }
-
-    @media print {
-      .no-print {
-        display: none !important;
-      }
-    }
-  </style>
 </head>
 <body>
 
-<div id="invoice-layout" style="width: 800px; padding: 40px; background: #fff; font-family: 'Yu Gothic', sans-serif;">
+<div id="invoice-layout">
 
-  <!-- 上段 -->
-  <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+  <div style="display:flex; justify-content:space-between;">
     <div>No：<span id="inv-no"></span></div>
-    <div style="font-size:28px; letter-spacing:10px; font-weight:bold; margin-top:-10px;">請　求　書</div>
+    <div style="font-size:28px; letter-spacing:10px; font-weight:bold;">請 求 書</div>
     <div><span id="inv-date"></span></div>
   </div>
 
   <div style="margin-top:40px;">下記のとおり、御請求申し上げます。</div>
 
-  <!-- 宛名 -->
   <div style="margin-top:20px; font-size:18px; font-weight:bold;">
     <span id="client-name"></span>
   </div>
 
-  <!-- 件名・作業日 -->
   <div style="margin-top:20px; line-height:1.8;">
     件名：<span id="subject"></span><br>
     作業日：<span id="work-date"></span><br>
@@ -71,8 +40,7 @@
     <div>松本 祐紀</div>
   </div>
 
-  <!-- 明細表 -->
-  <table style="margin-top:30px;">
+  <table>
     <thead>
       <tr>
         <th>摘要</th>
@@ -85,23 +53,19 @@
     <tbody id="details-body"></tbody>
   </table>
 
-  <!-- 小計・合計 -->
-  <div style="margin-top:20px; text-align:right; font-size:16px;">
+  <div class="amount-right">
     小計：<span id="subtotal"></span> 円<br>
-    <span style="font-weight:bold;">合計：<span id="total"></span> 円</span>
+    <strong>合計：<span id="total"></span> 円</strong>
   </div>
 
-  <!-- 備考 -->
-  <div style="margin-top:30px; font-size:12px; line-height:1.6;">
+  <div class="note">
     ※備考：<br>
     
   </div>
 
-  <!-- PDF作成ボタン（PDFでは非表示） -->
-  <div style="margin-top:40px; text-align:center;" class="no-print">
-    <button onclick="createPDF()" style="padding:10px 20px; font-size:16px;">
-      PDFを作成
-    </button>
+  <!-- PDF作成ボタン（キャプチャ時に JS が一時削除） -->
+  <div class="no-print">
+    <button onclick="createPDF()">PDFを作成</button>
   </div>
 
 </div>

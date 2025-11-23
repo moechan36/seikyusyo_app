@@ -1,0 +1,84 @@
+/* 全体設定 */
+body {
+  font-family: "Yu Gothic", "Hiragino Sans", sans-serif;
+  padding: 20px;
+  margin: 0;
+  background: #f4f4f4;
+}
+
+/* 中央の白い領域（プレビュー用） */
+#invoice-layout {
+  width: 800px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 40px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* 入力フォーム側の最大幅 */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* ラベル */
+label {
+  font-weight: bold;
+  margin-top: 15px;
+  display: block;
+}
+
+/* 入力 */
+input, select, button {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  box-sizing: border-box;
+  font-size: 15px;
+}
+
+button {
+  background: #333;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  padding: 12px;
+  margin-top: 20px;
+}
+
+/* テーブル */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 25px;
+}
+
+th, td {
+  border: 2px solid #444;
+  padding: 6px;
+}
+
+th {
+  background: #fafafa;
+  font-weight: bold;
+}
+
+/* 金額の位置 */
+.amount-right {
+  text-align: right;
+  font-weight: bold;
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+/* 注釈 */
+.note {
+  margin-top: 30px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.no-print {
+  margin-top: 40px;
+  text-align: center;
+}
