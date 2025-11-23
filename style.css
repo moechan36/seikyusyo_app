@@ -78,7 +78,9 @@ th {
   line-height: 1.6;
 }
 
-.no-print {
-  margin-top: 40px;
-  text-align: center;
+/* PDFには絶対に表示しない */
+@media print {
+  .no-print {
+    display: none !important;
+  }
 }
