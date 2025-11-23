@@ -15,37 +15,32 @@
 
 <div id="invoice-layout">
 
-  <!-- 上段 -->
-  <div class="invoice-header">
+  <div style="display:flex; justify-content:space-between;">
     <div>No：<span id="inv-no"></span></div>
-    <div class="title">請 求 書</div>
+    <div style="font-size:28px; letter-spacing:10px; font-weight:bold;">請 求 書</div>
     <div><span id="inv-date"></span></div>
   </div>
 
-  <div class="title-message">下記のとおり、御請求申し上げます。</div>
+  <div style="margin-top:40px;">下記のとおり、御請求申し上げます。</div>
 
-  <!-- 宛名 -->
-  <div class="client-name">
+  <div style="margin-top:20px; font-size:18px; font-weight:bold;">
     <span id="client-name"></span>
   </div>
 
-  <!-- 件名・作業日 -->
-  <div class="work-info">
+  <div style="margin-top:20px; line-height:1.8;">
     件名：<span id="subject"></span><br>
     作業日：<span id="work-date"></span><br>
   </div>
 
-  <!-- 請求者情報 -->
-  <div class="issuer-block">
-    <div class="issuer-title">【請求者】</div>
+  <!-- 自社情報（固定） -->
+  <div style="margin-top:20px; line-height:1.6;">
     <div>〒612-8448</div>
     <div>京都市竹田東小屋ノ内町104</div>
     <div>TEL：080-5629-5688</div>
     <div>松本 祐紀</div>
   </div>
 
-  <!-- 明細表 -->
-  <table class="invoice-table">
+  <table>
     <thead>
       <tr>
         <th>摘要</th>
@@ -58,7 +53,6 @@
     <tbody id="details-body"></tbody>
   </table>
 
-  <!-- 小計・合計 -->
   <div class="amount-right">
     小計：<span id="subtotal"></span> 円<br>
     <strong>合計：<span id="total"></span> 円</strong>
@@ -66,10 +60,10 @@
 
   <div class="note">
     ※備考：<br>
-    領収書につきましては、金融機関の振込明細書をもって代えさせて頂きます。
+    
   </div>
 
-  <!-- PDF作成ボタン（キャプチャ前に削除される） -->
+  <!-- PDF作成ボタン（キャプチャ時に JS が一時削除） -->
   <div class="no-print">
     <button onclick="createPDF()">PDFを作成</button>
   </div>

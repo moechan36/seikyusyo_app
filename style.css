@@ -1,3 +1,4 @@
+/* 全体設定 */
 body {
   font-family: "Yu Gothic", "Hiragino Sans", sans-serif;
   padding: 20px;
@@ -5,7 +6,7 @@ body {
   background: #f4f4f4;
 }
 
-/* メイン領域 */
+/* 中央の白い領域（プレビュー用） */
 #invoice-layout {
   width: 800px;
   margin: 0 auto;
@@ -14,76 +15,59 @@ body {
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-/* 入力画面用コンテナ */
+/* 入力フォーム側の最大幅 */
 .container {
   max-width: 800px;
   margin: 0 auto;
 }
 
-/* 見出し */
-.invoice-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.title {
-  font-size: 28px;
-  letter-spacing: 10px;
+/* ラベル */
+label {
   font-weight: bold;
+  margin-top: 15px;
+  display: block;
 }
 
-.title-message {
-  margin-top: 40px;
+/* 入力 */
+input, select, button {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  box-sizing: border-box;
+  font-size: 15px;
 }
 
-/* 宛名 */
-.client-name {
+button {
+  background: #333;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  padding: 12px;
   margin-top: 20px;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-/* 件名・作業日 */
-.work-info {
-  margin-top: 20px;
-  line-height: 1.8;
-}
-
-/* 請求者（もえ固定） */
-.issuer-block {
-  margin-top: 20px;
-  line-height: 1.6;
-  text-align: left;
-}
-
-.issuer-title {
-  font-weight: bold;
-  margin-bottom: 5px;
 }
 
 /* テーブル */
-.invoice-table {
+table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 30px;
+  margin-top: 25px;
 }
 
-.invoice-table th,
-.invoice-table td {
-  border: 2px solid #444; /* ★ 外枠と同じ太さに統一 */
+th, td {
+  border: 2px solid #444;
   padding: 6px;
 }
 
-.invoice-table th {
+th {
   background: #fafafa;
   font-weight: bold;
 }
 
-/* 金額表示 */
+/* 金額の位置 */
 .amount-right {
-  margin-top: 20px;
   text-align: right;
+  font-weight: bold;
+  margin-top: 20px;
   font-size: 16px;
 }
 
@@ -94,17 +78,7 @@ body {
   line-height: 1.6;
 }
 
-/* PDF作成ボタン */
 .no-print {
   margin-top: 40px;
   text-align: center;
-}
-
-button {
-  background: #333;
-  color: #fff;
-  border: none;
-  padding: 12px 20px;
-  font-size: 15px;
-  cursor: pointer;
 }
