@@ -162,3 +162,7 @@ th {
     font-size: 13px;
   }
 }
+
+#invoice-layout {
+  min-height: 1123px;
+}
