@@ -1,0 +1,22 @@
+/* 印刷時だけ適用されるCSS */
+@media print {
+
+  /* PDFにボタン類を写さない */
+  .no-print {
+    display: none !important;
+  }
+
+  /* 影や背景を削除（PDFをキレイにする） */
+  body {
+    box-shadow: none !important;
+    background: #fff !important;
+  }
+
+  /* プレビュー枠の余白と影を無効化 */
+  #invoice-layout {
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+}
