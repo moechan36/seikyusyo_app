@@ -4,23 +4,28 @@
   <meta charset="UTF-8">
   <title>請求書プレビュー</title>
 
-  <!-- プレビュー用CSS（前に綺麗に出ていたもの） -->
+  <!-- プレビュー用CSS（背景が最後まで伸びる完全版） -->
   <style>
+
+    /* ★ 追加：背景を完全に白・A4相当の高さ確保 */
     body {
+      background: #fff !important;
+      margin: 0;
+      padding: 0;
+      font-family: "Yu Gothic", sans-serif;
       display: flex;
       justify-content: center;
-      background: #f4f4f4;
-      padding: 20px;
-      margin: 0;
-      font-family: "Yu Gothic", sans-serif;
     }
 
     #invoice-layout {
       width: 800px;
       background: #fff;
       padding: 40px;
+      min-height: 1123px !important; /* A4縦の高さ */
+      box-sizing: border-box;
     }
 
+    /* テーブル */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -37,32 +42,34 @@
       background: #fafafa;
     }
 
+    /* 小計・合計 */
     #summary {
       margin-top: 20px;
       text-align: right;
       font-size: 16px;
+      font-weight: bold;
     }
 
+    /* 備考 */
     #note {
       margin-top: 30px;
       font-size: 12px;
       line-height: 1.6;
     }
 
-    /* PDF化するとき非表示 */
+    /* ★ 印刷時：不要な要素を非表示 */
     @media print {
       .no-print {
         display: none !important;
       }
+      body {
+        background: #fff !important;
+      }
     }
-
-    #invoice-layout {
-  min-height: 1123px;
-}
 
   </style>
 
-  <!-- html2canvas & jsPDF -->
+  <!-- html2canvas & jsPDF（使用しないなら無視してOK） -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -117,16 +124,14 @@
   <!-- 小計・合計 -->
   <div id="summary">
     小計：<span id="subtotal"></span> 円<br>
-    <span style="font-weight:bold;">合計：<span id="total"></span> 円</span>
+    合計：<span id="total"></span> 円
   </div>
 
   <!-- 備考 -->
   <div id="note">
     ※備考：<br>
-    
+    領収書につきましては、金融機関の振込明細書をもって代えさせて頂きます。
   </div>
-
-
 
 </div>
 
