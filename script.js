@@ -9,17 +9,18 @@ function goPreview() {
     details: []
   };
 
-  // 明細10行
+  // 明細10行（空欄も含めて必ず10行入れる）
   for (let i = 1; i <= 10; i++) {
     data.details.push({
-      item: document.getElementById("item" + i).value,
-      qty: document.getElementById("qty" + i).value,
-      unit: document.getElementById("unit" + i).value,
-      price: document.getElementById("price" + i).value
+      item: document.getElementById("item" + i).value || "",
+      qty: document.getElementById("qty" + i).value || "",
+      unit: document.getElementById("unit" + i).value || "",
+      price: document.getElementById("price" + i).value || ""
     });
   }
 
   localStorage.setItem("invoiceData", JSON.stringify(data));
+
   window.location.href = "invoice_layout.html";
 }
 
@@ -37,19 +38,19 @@ if (location.pathname.includes("invoice_layout.html")) {
   const tbody = document.getElementById("details-body");
   let subtotal = 0;
 
+  // ここ → 必ず10行分出す
   data.details.forEach((row) => {
-    if (!row.item && !row.qty && !row.unit && !row.price) return;
-
     const qty = Number(row.qty || 0);
     const price = Number(row.price || 0);
     const amount = qty * price;
+
     subtotal += amount;
 
     tbody.innerHTML += `
       <tr>
-        <td>${row.item}</td>
-        <td style="text-align:right;">${qty || ""}</td>
-        <td>${row.unit}</td>
+        <td>${row.item || ""}</td>
+        <td style="text-align:right;">${row.qty || ""}</td>
+        <td>${row.unit || ""}</td>
         <td style="text-align:right;">${price ? price.toLocaleString() : ""}</td>
         <td style="text-align:right;">${amount ? amount.toLocaleString() : ""}</td>
       </tr>
@@ -61,11 +62,11 @@ if (location.pathname.includes("invoice_layout.html")) {
 }
 
 
-// ▼ PDF生成（スマホ対応版）
+// ▼ PDF生成（iPhone対応版）
+// ※ プレビュー画面では呼ばれなくなるがコードは残しておく
 async function createPDF() {
   const element = document.getElementById("invoice-layout");
 
-  // 高解像度で画像化（スマホ対応）
   const canvas = await html2canvas(element, {
     scale: window.devicePixelRatio * 2,
     useCORS: true
@@ -76,19 +77,23 @@ async function createPDF() {
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF("p", "mm", "a4");
 
-  // A4横幅に合わせる
   const imgWidth = 210;
   const imgHeight = canvas.height * (imgWidth / canvas.width);
 
   pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
 
-  // ▼ iPhone / iPad / iOS：直接保存すると壊れるため別タブで開く
-  if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+
+  if (isIOS) {
     const blob = pdf.output("blob");
     const url = URL.createObjectURL(blob);
-    window.open(url, "_blank");  // 新しいタブでPDFを表示（Safari対応）
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.click();
   } else {
-    // PCは普通に保存
     pdf.save("invoice.pdf");
   }
 }
