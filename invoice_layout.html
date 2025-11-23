@@ -11,12 +11,15 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-  <!-- ★ PDF時に確実に非表示になるように強制CSSをHTML内に直書き ★ -->
+  <!-- ★ ここが最重要：PDF時だけ確実に非表示にするCSS ★ -->
   <style>
-    .no-print {
+    /* PDFスクショ前に強制で隠す */
+    .no-print-force {
       display: none !important;
       visibility: hidden !important;
       opacity: 0 !important;
+      height: 0 !important;
+      overflow: hidden !important;
     }
   </style>
 </head>
@@ -80,9 +83,11 @@
     領収書につきましては、金融機関の振込明細書をもって代えさせて頂きます。
   </div>
 
-  <!-- ★ このボタンだけはPDFで絶対に消す ★ -->
-  <div style="margin-top:40px; text-align:center;">
-    <button class="no-print" onclick="createPDF()" style="padding:10px 20px; font-size:16px;">PDFを作成</button>
+  <!-- ★ 画面表示では出す / PDFには絶対に写らないボタン ★ -->
+  <div id="pdf-button-area" style="margin-top:40px; text-align:center;">
+    <button onclick="createPDF()" style="padding:10px 20px; font-size:16px;">
+      PDFを作成
+    </button>
   </div>
 
 </div>
