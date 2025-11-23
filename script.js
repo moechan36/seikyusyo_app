@@ -20,7 +20,6 @@ function goPreview() {
   }
 
   localStorage.setItem("invoiceData", JSON.stringify(data));
-
   window.location.href = "invoice_layout.html";
 }
 
@@ -64,8 +63,11 @@ if (location.pathname.includes("invoice_layout.html")) {
 }
 
 
-// ■ PDF生成
+// ■ PDF生成（ボタンを一時的に非表示 → PDF生成 → 再表示）
 async function createPDF() {
+  const btn = document.querySelector(".no-print");
+  btn.style.display = "none";  // ★ 写り込み防止
+
   const element = document.getElementById("invoice-layout");
 
   const canvas = await html2canvas(element, { scale: 2 });
@@ -79,4 +81,6 @@ async function createPDF() {
 
   pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
   pdf.save("invoice.pdf");
+
+  btn.style.display = "block"; // ★ 画面上では再表示
 }
