@@ -1,0 +1,58 @@
+/* PDF用CSS（印刷時だけ適用される） */
+
+body {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  margin: 0;
+  padding: 0;
+}
+
+#invoice-layout {
+  width: 210mm;         /* A4 width */
+  min-height: 297mm;    /* A4 height */
+  padding: 30mm 20mm;   /* 印刷時にズレない余白 */
+  box-sizing: border-box;
+  background: #fff;
+  font-family: "Yu Gothic", sans-serif;
+}
+
+/* タイトル部分 */
+h1, h2, h3 {
+  margin: 0;
+  padding: 0;
+}
+
+/* テーブルの線を均一に */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 2px solid #444;
+  padding: 6px;
+  font-size: 14px;
+}
+
+th {
+  background: #f5f5f5 !important;
+}
+
+/* 小計・合計位置固定 */
+#summary {
+  text-align: right;
+  font-size: 16px;
+  margin-top: 15px;
+}
+
+/* 備考 */
+#note {
+  font-size: 12px;
+  margin-top: 25px;
+  line-height: 1.6;
+}
+
+/* PDF作成ボタンを印刷時だけ非表示 */
+.no-print {
+  display: none !important;
+}
